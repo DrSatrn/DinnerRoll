@@ -40,12 +40,13 @@
     {#if !appState.hasRolled}
       <button
         type="button"
-        class="btn btn-primary btn-lg roll-main-btn"
+        class="btn btn-primary btn-lg roll-main-btn tactile-lever-btn {appState.isSpinning ? 'spinning' : ''}"
         onclick={() => appState.rollPlan()}
         disabled={appState.isSpinning || appState.meals.length === 0}
+        aria-label="Roll Schedule"
       >
-        <IconRoll size={20} />
-        <span>Roll Schedule</span>
+        <IconRoll size={22} class={appState.isSpinning ? 'icon-spin' : ''} />
+        <span>{appState.isSpinning ? 'Spinning Reels...' : 'Roll Schedule'}</span>
       </button>
     {:else}
       <div class="history-stepper">
@@ -53,7 +54,7 @@
           type="button"
           class="btn btn-secondary stepper-btn"
           onclick={() => appState.navigatePlanHistory('prev')}
-          disabled={appState.historyIndex <= 0}
+          disabled={appState.historyIndex <= 0 || appState.isSpinning}
           title="Return to previous generated roll in this session"
           aria-label="Previous roll"
         >
@@ -69,7 +70,7 @@
           type="button"
           class="btn btn-secondary stepper-btn"
           onclick={() => appState.navigatePlanHistory('next')}
-          disabled={appState.historyIndex >= appState.generationHistory.length - 1}
+          disabled={appState.historyIndex >= appState.generationHistory.length - 1 || appState.isSpinning}
           title="Go forward to next generated roll in this session"
           aria-label="Next roll"
         >
@@ -81,20 +82,20 @@
       <div class="action-buttons-group">
         <button
           type="button"
-          class="btn btn-secondary"
+          class="btn btn-secondary tactile-reroll-btn"
           onclick={() => appState.rerollFullPlan()}
           disabled={appState.fullPlanRerollsRemaining <= 0 || appState.isSpinning}
           title="Reroll the full plan ({appState.fullPlanRerollsRemaining} remaining)"
         >
-          <IconReroll size={16} />
+          <IconReroll size={16} class={appState.isSpinning ? 'icon-spin' : ''} />
           <span>Reroll All ({appState.fullPlanRerollsRemaining} left)</span>
         </button>
 
         <button
           type="button"
-          class="btn btn-success btn-lg accept-btn"
+          class="btn btn-success btn-lg accept-btn tactile-accept-btn"
           onclick={handleAccept}
-          disabled={isAccepting}
+          disabled={isAccepting || appState.isSpinning}
         >
           <IconAccept size={18} />
           <span>Accept Plan</span>
@@ -109,7 +110,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin-top: 1.25rem;
+    margin-top: 0.75rem;
   }
 
   .relaxation-alert {
@@ -153,7 +154,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding: 1rem 1.25rem;
+    padding: 1.1rem 1.35rem;
     background-color: var(--bg-surface);
     border: 1px solid var(--border-light);
     border-radius: var(--radius-md);
@@ -161,15 +162,50 @@
   }
 
   .btn-lg {
-    padding: 0.7rem 1.5rem;
+    padding: 0.75rem 1.6rem;
     font-size: 1rem;
     font-weight: 600;
   }
 
   .roll-main-btn {
     width: 100%;
-    max-width: 320px;
+    max-width: 340px;
     margin: 0 auto;
+  }
+
+  .tactile-lever-btn {
+    position: relative;
+    padding: 0.9rem 2.2rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 0 var(--accent-terracotta-hover), 0 8px 18px var(--chassis-glow);
+    transition: all 0.12s ease;
+  }
+
+  .tactile-lever-btn:active:not(:disabled) {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 var(--accent-terracotta-hover), 0 3px 8px var(--chassis-glow);
+  }
+
+  .tactile-lever-btn.spinning {
+    animation: pulseLever 0.6s infinite alternate;
+  }
+
+  @keyframes pulseLever {
+    0% { filter: brightness(1); }
+    100% { filter: brightness(1.15); box-shadow: 0 4px 20px var(--chassis-glow); }
+  }
+
+  :global(.icon-spin) {
+    animation: iconRotate 0.6s linear infinite;
+  }
+
+  @keyframes iconRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 
   .history-stepper {
@@ -194,6 +230,16 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
+  }
+
+  .tactile-accept-btn {
+    box-shadow: 0 3px 0 #284438;
+    transition: all 0.12s ease;
+  }
+
+  .tactile-accept-btn:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #284438;
   }
 
   @media (max-width: 768px) {

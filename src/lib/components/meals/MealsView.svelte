@@ -175,7 +175,7 @@
             </div>
           {/if}
 
-          {#if meal.caloriesPerServing}
+          {#if appState.settings.showNutritionInfo && meal.caloriesPerServing}
             <div class="macro-chips">
               <span class="macro-item">{meal.caloriesPerServing} kcal</span>
               <span class="macro-item">{meal.proteinGramsPerServing || 0}g P</span>

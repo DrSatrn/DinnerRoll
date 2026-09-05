@@ -39,10 +39,11 @@ export async function updateSettings(
   database: DinnerRollDB = defaultDb
 ): Promise<HouseholdSettings> {
   const current = await getSettings(database);
+  const cleanPartial = JSON.parse(JSON.stringify(partial));
   const updated: SettingsRecord = {
     id: 'current',
     ...current,
-    ...partial
+    ...cleanPartial
   };
   await database.settings.put(updated);
   const { id: _, ...result } = updated;

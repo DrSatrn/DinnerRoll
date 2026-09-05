@@ -1,29 +1,31 @@
 <script lang="ts">
   import { appState } from '../../stores/app-state.svelte';
-  import type { MealPeriod } from '../../domain/models';
   import { ALL_MEAL_PERIODS } from '../../domain/constants';
-  import { IconBreakfast, IconLunch, IconDinner } from '../../icons';
+  import type { MealPeriod } from '../../domain/models';
+  import {
+    IconBreakfast,
+    IconLunch,
+    IconDinner
+  } from '../../icons';
 
-  const durationOptions = [3, 5, 7, 10, 14, 21];
+  const durationOptions = [3, 5, 7, 14];
+
+  function handleDurationChange(e: Event) {
+    const target = e.target as HTMLSelectElement;
+    appState.planDurationDays = parseInt(target.value, 10);
+    appState.initializeUnpopulatedGrid();
+  }
 
   function toggleMealPeriod(period: MealPeriod) {
     if (appState.planMealPeriods.includes(period)) {
       if (appState.planMealPeriods.length > 1) {
         appState.planMealPeriods = appState.planMealPeriods.filter(p => p !== period);
         appState.initializeUnpopulatedGrid();
-      } else {
-        appState.showToast('At least one meal period must remain selected.', 'warning');
       }
     } else {
       appState.planMealPeriods = [...appState.planMealPeriods, period];
       appState.initializeUnpopulatedGrid();
     }
-  }
-
-  function handleDurationChange(e: Event) {
-    const target = e.target as HTMLSelectElement;
-    appState.planDurationDays = parseInt(target.value, 10);
-    appState.initializeUnpopulatedGrid();
   }
 
   function handleStartDateChange(e: Event) {
@@ -36,18 +38,20 @@
 </script>
 
 <div class="setup-bar">
-  <div class="setup-group">
+  <div class="setup-group setup-group-date">
     <label for="plan-start-date" class="setup-label">Starting Date</label>
-    <input
-      id="plan-start-date"
-      type="date"
-      class="input setup-input"
-      value={appState.planStartDate}
-      onchange={handleStartDateChange}
-    />
+    <div class="date-input-container">
+      <input
+        id="plan-start-date"
+        type="date"
+        class="input setup-input date-native-field"
+        value={appState.planStartDate}
+        onchange={handleStartDateChange}
+      />
+    </div>
   </div>
 
-  <div class="setup-group">
+  <div class="setup-group setup-group-duration">
     <label for="plan-duration" class="setup-label">Duration</label>
     <select
       id="plan-duration"
@@ -61,7 +65,7 @@
     </select>
   </div>
 
-  <div class="setup-group">
+  <div class="setup-group setup-group-periods">
     <span class="setup-label">Meal Periods</span>
     <div class="period-toggle-group">
       {#each ALL_MEAL_PERIODS as period}
@@ -80,6 +84,20 @@
       {/each}
     </div>
   </div>
+
+  <div class="setup-group setup-group-nutrition">
+    <span class="setup-label">Nutrition</span>
+    <button
+      type="button"
+      class="nutrition-toggle-btn {appState.settings.showNutritionInfo ? 'active' : ''}"
+      onclick={() => appState.toggleNutrition()}
+      title="Toggle calories and protein on schedule cards and exports"
+      aria-pressed={appState.settings.showNutritionInfo}
+    >
+      <span class="nutrition-status-dot"></span>
+      <span>{appState.settings.showNutritionInfo ? 'Macros Shown' : 'Macros Hidden'}</span>
+    </button>
+  </div>
 </div>
 
 <style>
@@ -93,12 +111,16 @@
     border: 1px solid var(--border-light);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
   }
 
   .setup-group {
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
+    min-width: 0;
   }
 
   .setup-label {
@@ -109,10 +131,29 @@
     letter-spacing: 0.04em;
   }
 
-  .setup-input, .setup-select {
+  .date-input-container {
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+  }
+
+  .date-native-field {
+    width: auto;
+    min-width: 150px;
+    height: 40px;
+    min-height: 40px;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    line-height: normal;
+  }
+
+  .setup-select {
     width: auto;
     min-width: 140px;
-    height: 38px;
+    height: 40px;
+    min-height: 40px;
   }
 
   .period-toggle-group {
@@ -131,7 +172,7 @@
     background-color: var(--bg-surface);
     color: var(--text-secondary);
     transition: all 0.15s ease;
-    height: 38px;
+    height: 40px;
   }
 
   .period-chip:hover {
@@ -146,19 +187,72 @@
     font-weight: 600;
   }
 
+  .nutrition-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.8rem;
+    font-size: 0.84rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light);
+    background-color: var(--bg-surface);
+    color: var(--text-secondary);
+    transition: all 0.15s ease;
+    height: 40px;
+  }
+
+  .nutrition-toggle-btn:hover {
+    background-color: var(--bg-subtle);
+    color: var(--text-primary);
+  }
+
+  .nutrition-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--border-dark);
+    transition: background-color 0.15s ease;
+  }
+
+  .nutrition-toggle-btn.active {
+    border-color: var(--accent-sage);
+    color: var(--text-primary);
+  }
+
+  .nutrition-toggle-btn.active .nutrition-status-dot {
+    background-color: var(--accent-sage);
+  }
+
   @media (max-width: 640px) {
     .setup-bar {
       flex-direction: column;
       align-items: stretch;
       gap: 1rem;
+      width: 100%;
     }
 
-    .setup-input, .setup-select {
+    .setup-group {
       width: 100%;
+    }
+
+    .date-input-container {
+      width: 100%;
+    }
+
+    .date-native-field, .setup-select {
+      width: 100%;
+      max-width: 100%;
+      height: 42px;
+      min-height: 42px;
     }
 
     .period-chip {
       flex: 1;
+      justify-content: center;
+    }
+
+    .nutrition-toggle-btn {
+      width: 100%;
       justify-content: center;
     }
   }

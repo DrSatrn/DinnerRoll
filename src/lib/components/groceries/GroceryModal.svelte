@@ -1,7 +1,7 @@
 <script lang="ts">
   import { appState } from '../../stores/app-state.svelte';
   import { generateGroceryList } from '../../integrations/groceries';
-  import { invokeAppleShortcut } from '../../integrations/shortcuts';
+  import { invokeAppleShortcut, buildShortcutSetupUrl } from '../../integrations/shortcuts';
   import { IconClose, IconCopy, IconExport, IconDownload, IconCheck } from '../../icons';
   import type { ScheduledSlot } from '../../domain/models';
 
@@ -43,12 +43,14 @@
   }
 
   async function handleAppleGroceries() {
-    const res = await invokeAppleShortcut(groceryResult.items);
+    const listName = appState.settings.remindersListName || 'Groceries';
+    const shortcutName = appState.settings.shortcutName || 'DinnerRoll Groceries';
+    const res = await invokeAppleShortcut(groceryResult.items, shortcutName, listName);
     if (!res.success) {
       appState.showToast('Apple Shortcuts could not be opened directly. List copied to clipboard.', 'warning');
       await handleCopy();
     } else {
-      appState.showToast('Launching Apple Shortcuts...', 'info');
+      appState.showToast(`Sending items to "${listName}" in Apple Reminders...`, 'info');
     }
   }
 
@@ -117,10 +119,18 @@
           class="btn btn-primary apple-btn"
           onclick={handleAppleGroceries}
           disabled={groceryResult.items.length === 0}
-          title="Add items to Apple Reminders via the companion Shortcut"
+          title="Add items to Apple Reminders list: {appState.settings.remindersListName || 'Groceries'}"
         >
-          <span>Add to Apple Groceries</span>
+          <span>Add to Apple Groceries ({appState.settings.remindersListName || 'Groceries'})</span>
         </button>
+
+        <a
+          href={buildShortcutSetupUrl()}
+          class="btn btn-ghost btn-sm shortcut-setup-link"
+          title="Configure or create companion Shortcut in Apple Shortcuts app"
+        >
+          Setup Shortcut
+        </a>
 
         <button
           type="button"

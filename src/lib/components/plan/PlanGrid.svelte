@@ -55,7 +55,15 @@
               role="gridcell"
             >
               <div class="slot-top-bar">
-                <span class="period-badge">{slot.mealPeriod}</span>
+                <div class="badges-row">
+                  <span class="period-badge">{slot.mealPeriod}</span>
+                  {#if slot.isLeftover}
+                    <span class="leftover-pill" title="Prepared from previous day leftovers">
+                      <IconLeftovers size={10} />
+                      <span>Leftover</span>
+                    </span>
+                  {/if}
+                </div>
                 
                 <button
                   type="button"
@@ -84,20 +92,13 @@
                   class="slot-body filled-body {isSlotSpinning ? 'reel-spinning' : ''}"
                   style="animation-delay: {animDelay};"
                 >
-                  {#if slot.isLeftover}
-                    <div class="leftover-tag">
-                      <IconLeftovers size={12} />
-                      <span>Leftovers</span>
-                    </div>
-                  {/if}
-
                   <h3 class="meal-name">{slot.mealName}</h3>
 
                   {#if slot.category}
                     <span class="category-tag">{slot.category}</span>
                   {/if}
 
-                  {#if slot.calories}
+                  {#if appState.settings.showNutritionInfo && slot.calories}
                     <div class="macros-summary">
                       <span>{slot.calories} kcal</span>
                       {#if slot.protein}<span>&bull; {slot.protein}g P</span>{/if}
@@ -296,16 +297,12 @@
     margin-top: 0.2rem;
   }
 
-  .leftover-tag {
-    display: inline-flex;
+  .badges-row {
+    display: flex;
     align-items: center;
-    gap: 0.3rem;
-    font-size: 0.68rem;
-    font-weight: 700;
-    color: var(--accent-amber);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    margin-bottom: 0.25rem;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+    min-width: 0;
   }
 
   .meal-name {

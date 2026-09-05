@@ -1,6 +1,7 @@
-/* DinnerRoll Warm, Restrained, Clean Design System */
+/* DinnerRoll Multi-Theme Design System & Scheduling Console */
 
-:root {
+/* Theme 1: Bistro Terracotta (Default) */
+:root, [data-theme="warm-terracotta"] {
   --bg-app: #FAF8F5;
   --bg-surface: #FFFFFF;
   --bg-subtle: #F3EFE9;
@@ -28,9 +29,16 @@
   --accent-error: #991B1B;
   --accent-error-light: #FEE2E2;
 
+  --chassis-bg: #F4EFE6;
+  --chassis-border: #D8D0C3;
+  --chassis-inner: #FAF8F5;
+  --chassis-metal: #7B7265;
+  --chassis-glow: rgba(184, 83, 36, 0.25);
+
   --shadow-sm: 0 1px 2px rgba(45, 42, 38, 0.05);
   --shadow-md: 0 4px 12px rgba(45, 42, 38, 0.07);
   --shadow-lg: 0 8px 24px rgba(45, 42, 38, 0.1);
+  --shadow-tactile: 0 4px 0 var(--border-medium);
 
   --radius-sm: 6px;
   --radius-md: 10px;
@@ -38,7 +46,124 @@
   --radius-full: 9999px;
 
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-serif: "Iowan Old Style", "Apple Garamond", "Baskerville", "Times New Roman", serif;
+  --font-serif: "Iowan Old Style", "Apple Garamond", "Baskerville", "Times New Roman", Georgia, serif;
+}
+
+/* Theme 2: Nordic Slate (Nord Open-Source System) */
+[data-theme="nordic-slate"] {
+  --bg-app: #ECEFF4;
+  --bg-surface: #FFFFFF;
+  --bg-subtle: #E5E9F0;
+  --bg-muted: #D8DEE9;
+  
+  --border-light: #D8DEE9;
+  --border-medium: #4C566A;
+  --border-dark: #2E3440;
+
+  --text-primary: #2E3440;
+  --text-secondary: #4C566A;
+  --text-tertiary: #7B88A1;
+  --text-on-accent: #ECEFF4;
+
+  --accent-terracotta: #5E81AC;
+  --accent-terracotta-hover: #4C6F98;
+  --accent-terracotta-light: #EBF1F8;
+  
+  --accent-sage: #8FBCBB;
+  --accent-sage-light: #EAF3F3;
+  
+  --accent-amber: #D08770;
+  --accent-amber-light: #FAF0EC;
+
+  --accent-error: #BF616A;
+  --accent-error-light: #F9ECEE;
+
+  --chassis-bg: #E5E9F0;
+  --chassis-border: #C6D1E1;
+  --chassis-inner: #F8FAFC;
+  --chassis-metal: #4C566A;
+  --chassis-glow: rgba(94, 129, 172, 0.28);
+
+  --shadow-tactile: 0 4px 0 #CBD5E1;
+}
+
+/* Theme 3: Midnight Diner (Catppuccin Mocha & Tokyo Night) */
+[data-theme="midnight-diner"] {
+  --bg-app: #181825;
+  --bg-surface: #1E1E2E;
+  --bg-subtle: #252538;
+  --bg-muted: #313244;
+  
+  --border-light: #313244;
+  --border-medium: #45475A;
+  --border-dark: #6C7086;
+
+  --text-primary: #CDD6F4;
+  --text-secondary: #A6ADC8;
+  --text-tertiary: #7F849C;
+  --text-on-accent: #11111B;
+
+  --accent-terracotta: #F5A97F;
+  --accent-terracotta-hover: #EE99A0;
+  --accent-terracotta-light: #2D232C;
+  
+  --accent-sage: #89DCEB;
+  --accent-sage-light: #1C2936;
+  
+  --accent-amber: #F9E2AF;
+  --accent-amber-light: #2A2820;
+
+  --accent-error: #F38BA8;
+  --accent-error-light: #351C24;
+
+  --chassis-bg: #14141F;
+  --chassis-border: #383A59;
+  --chassis-inner: #1A1A28;
+  --chassis-metal: #6272A4;
+  --chassis-glow: rgba(245, 169, 127, 0.35);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-tactile: 0 4px 0 #11111B;
+}
+
+/* Theme 4: Olive Grove & Brass (Gruvbox Botanical Earth) */
+[data-theme="olive-grove"] {
+  --bg-app: #F4EDE0;
+  --bg-surface: #FDFBF7;
+  --bg-subtle: #EBDDC8;
+  --bg-muted: #DECBB3;
+  
+  --border-light: #D6C4AA;
+  --border-medium: #A89984;
+  --border-dark: #665C54;
+
+  --text-primary: #3C3836;
+  --text-secondary: #504945;
+  --text-tertiary: #7C6F64;
+  --text-on-accent: #FDFBF7;
+
+  --accent-terracotta: #4F772D;
+  --accent-terracotta-hover: #3E5F23;
+  --accent-terracotta-light: #EEF4E8;
+  
+  --accent-sage: #B57614;
+  --accent-sage-light: #FBF2DD;
+  
+  --accent-amber: #AF3A03;
+  --accent-amber-light: #FAEDE7;
+
+  --accent-error: #9D0006;
+  --accent-error-light: #F8E6E7;
+
+  --chassis-bg: #EAE0CE;
+  --chassis-border: #C8B79B;
+  --chassis-inner: #F6EFE3;
+  --chassis-metal: #5C5243;
+  --chassis-glow: rgba(79, 119, 45, 0.28);
+
+  --shadow-tactile: 0 4px 0 #C4B295;
 }
 
 *, *::before, *::after {
@@ -55,6 +180,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 button, input, select, textarea {
@@ -79,7 +205,7 @@ a {
   outline-offset: 2px;
 }
 
-/* Buttons */
+/* Base Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -122,7 +248,7 @@ a {
 }
 
 .btn-success:hover:not(:disabled) {
-  background-color: #2E5042;
+  filter: brightness(0.92);
 }
 
 .btn-ghost {
@@ -142,13 +268,15 @@ a {
 /* Form Controls */
 .input, .select, .textarea {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   padding: 0.55rem 0.85rem;
   border: 1px solid var(--border-light);
   border-radius: var(--radius-sm);
   background-color: var(--bg-surface);
   color: var(--text-primary);
   font-size: 0.92rem;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .input:focus, .select:focus, .textarea:focus {
@@ -156,19 +284,57 @@ a {
   outline: none;
 }
 
-/* Reel Animation */
+/* iOS Safari Date Picker Normalization */
+input[type="date"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-height: 40px;
+  height: 40px;
+  box-sizing: border-box;
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+  line-height: normal;
+  margin: 0;
+  padding: 0;
+}
+
+/* Leftover indicator pill */
+.leftover-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.45rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  background-color: var(--accent-amber-light);
+  color: var(--accent-amber);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+/* Reel Motion Animation */
 @keyframes reelDecelerate {
   0% {
-    transform: translateY(-80px);
-    opacity: 0.3;
-    filter: blur(2px);
+    transform: translateY(-90px);
+    opacity: 0.2;
+    filter: blur(4px);
   }
-  65% {
-    transform: translateY(6px);
+  60% {
+    transform: translateY(8px);
     opacity: 0.95;
-    filter: blur(0px);
+    filter: blur(0.5px);
   }
-  85% {
+  80% {
     transform: translateY(-3px);
   }
   100% {
@@ -179,7 +345,7 @@ a {
 }
 
 .reel-spinning {
-  animation: reelDecelerate 0.65s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  animation: reelDecelerate 0.75s cubic-bezier(0.2, 0.95, 0.35, 1) forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {

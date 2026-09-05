@@ -21,7 +21,7 @@
     <div class="brand" role="button" tabindex="0" onclick={() => (appState.currentView = 'plan')} onkeydown={(e) => e.key === 'Enter' && (appState.currentView = 'plan')}>
       <DinnerRollLogo size={32} class="brand-icon" />
       <div class="brand-text">
-        <span class="brand-title">DinnerRoll</span>
+        <span class="brand-title">Dinner<span class="brand-title-accent">Roll</span></span>
         <span class="brand-tagline">Household Meal Scheduler</span>
       </div>
     </div>
@@ -82,11 +82,19 @@
   }
 
   .brand-title {
-    font-size: 1.25rem;
+    font-size: 1.35rem;
     font-weight: 700;
+    font-family: var(--font-serif);
     color: var(--text-primary);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
     line-height: 1.15;
+  }
+
+  .brand-title-accent {
+    color: var(--accent-terracotta);
+    font-style: italic;
+    font-weight: 700;
+    margin-left: 1px;
   }
 
   .brand-tagline {

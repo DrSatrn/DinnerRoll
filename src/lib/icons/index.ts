@@ -27,3 +27,4 @@ export { default as IconDownload } from './IconDownload.svelte';
 export { default as IconUpload } from './IconUpload.svelte';
 export { default as IconCopy } from './IconCopy.svelte';
 export { default as IconCheck } from './IconCheck.svelte';
+export { default as IconEmail } from './IconEmail.svelte';
