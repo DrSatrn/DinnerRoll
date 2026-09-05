@@ -26,6 +26,10 @@ export const DEFAULT_SETTINGS: HouseholdSettings = {
   maxFullPlanRerolls: 1,
   maxIndividualSlotRerolls: 1,
   reducedMotion: false,
+  showNutritionInfo: true,
+  theme: 'warm-terracotta',
+  remindersListName: 'Groceries',
+  shortcutName: 'DinnerRoll Groceries',
 };
 
 export const MAX_PLAN_DURATION_DAYS = 28;

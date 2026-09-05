@@ -1,17 +1,22 @@
 import { jsPDF } from 'jspdf';
-import type { ScheduledSlot } from '../domain/models';
+import type { ScheduledSlot, AppTheme } from '../domain/models';
 import { formatHumanDate } from '../scheduler/date-utils';
+import { formatFriendlyShortDate } from './clipboard';
 import type { AggregatedGroceryItem } from './groceries';
+import { getThemePalette, hexToRgb } from '../themes';
 
 export interface PDFExportOptions {
   startDate: string;
   endDate: string;
   slots: ScheduledSlot[];
   groceries?: AggregatedGroceryItem[];
+  themeId?: AppTheme;
+  showNutrition?: boolean;
 }
 
 export function generatePlanPDF(options: PDFExportOptions): jsPDF {
-  const { startDate, endDate, slots, groceries = [] } = options;
+  const { startDate, endDate, slots, groceries = [], themeId, showNutrition = true } = options;
+  const theme = getThemePalette(themeId);
 
   // Create landscape A4 PDF: 297mm wide x 210mm high
   const doc = new jsPDF({
@@ -24,16 +29,25 @@ export function generatePlanPDF(options: PDFExportOptions): jsPDF {
   const pageHeight = 210;
   const margin = 14;
 
-  // Background subtle warm tone
-  doc.setFillColor(250, 248, 245);
+  const [bgR, bgG, bgB] = hexToRgb(theme.colors.bgApp);
+  const [headR, headG, headB] = hexToRgb(theme.colors.headerBg);
+  const [headTxtR, headTxtG, headTxtB] = hexToRgb(theme.colors.headerText);
+  const [cardR, cardG, cardB] = hexToRgb(theme.colors.cardBg);
+  const [bordR, bordG, bordB] = hexToRgb(theme.colors.borderLight);
+  const [txtR, txtG, txtB] = hexToRgb(theme.colors.textPrimary);
+  const [secTxtR, secTxtG, secTxtB] = hexToRgb(theme.colors.textSecondary);
+  const [accentR, accentG, accentB] = hexToRgb(theme.colors.accentHighlight);
+
+  // Background tone
+  doc.setFillColor(bgR, bgG, bgB);
   doc.rect(0, 0, pageWidth, pageHeight, 'F');
 
   // Header Bar
-  doc.setFillColor(45, 42, 38);
+  doc.setFillColor(headR, headG, headB);
   doc.rect(margin, margin, pageWidth - margin * 2, 18, 'F');
 
   // Header Logo Text
-  doc.setTextColor(255, 255, 255);
+  doc.setTextColor(headTxtR, headTxtG, headTxtB);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(16);
   doc.text('DinnerRoll', margin + 6, margin + 11);
@@ -41,7 +55,7 @@ export function generatePlanPDF(options: PDFExportOptions): jsPDF {
   // Subtitle / Date range
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
-  const dateRangeText = `${formatHumanDate(startDate)} to ${formatHumanDate(endDate)}`;
+  const dateRangeText = `${formatFriendlyShortDate(startDate)} to ${formatFriendlyShortDate(endDate)}`;
   doc.text(dateRangeText, pageWidth - margin - 6, margin + 11, { align: 'right' });
 
   // Group slots by date
@@ -56,8 +70,7 @@ export function generatePlanPDF(options: PDFExportOptions): jsPDF {
   const distinctDates = Array.from(dateMap.keys()).sort();
   const numDays = distinctDates.length;
 
-  // Grid layout calculation
-  // Up to 7 days per row
+  // Grid layout calculation: up to 7 days per row
   const daysPerRow = Math.min(7, numDays > 0 ? numDays : 7);
   const numRows = Math.ceil(numDays / daysPerRow);
   const availableWidth = pageWidth - margin * 2;
@@ -74,18 +87,19 @@ export function generatePlanPDF(options: PDFExportOptions): jsPDF {
 
     const daySlots = dateMap.get(dStr) || [];
 
-    // Card background
-    doc.setFillColor(255, 255, 255);
-    doc.setDrawColor(225, 220, 212);
+    // Card background & border
+    doc.setFillColor(cardR, cardG, cardB);
+    doc.setDrawColor(bordR, bordG, bordB);
     doc.roundedRect(x, y, colWidth, cardHeight, 2, 2, 'FD');
 
-    // Day Header
-    doc.setFillColor(242, 238, 230);
+    // Day Header strip
+    const [subtleR, subtleG, subtleB] = hexToRgb(theme.colors.bgSubtle);
+    doc.setFillColor(subtleR, subtleG, subtleB);
     doc.rect(x, y, colWidth, 8, 'F');
-    doc.setTextColor(50, 45, 40);
+    doc.setTextColor(txtR, txtG, txtB);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(8.5);
-    doc.text(formatHumanDate(dStr), x + colWidth / 2, y + 5.5, { align: 'center' });
+    doc.text(formatFriendlyShortDate(dStr), x + colWidth / 2, y + 5.5, { align: 'center' });
 
     // Day Content (Slots)
     let slotY = y + 13;
@@ -93,55 +107,55 @@ export function generatePlanPDF(options: PDFExportOptions): jsPDF {
       if (slot.isBlocked) {
         doc.setFont('helvetica', 'italic');
         doc.setFontSize(8);
-        doc.setTextColor(150, 145, 140);
+        doc.setTextColor(secTxtR, secTxtG, secTxtB);
         doc.text(`[${slot.mealPeriod}] Blocked`, x + 3, slotY);
       } else if (slot.mealName) {
         // Period & Leftover indicator
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(7.5);
-        doc.setTextColor(180, 83, 9); // warm amber
+        doc.setFontSize(7.2);
+        doc.setTextColor(accentR, accentG, accentB);
         let label = slot.mealPeriod.toUpperCase();
         if (slot.isLeftover) label += ' (LEFTOVER)';
         doc.text(label, x + 3, slotY);
 
         // Meal Name (wrapped if needed)
-        slotY += 4.5;
+        slotY += 4.2;
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(8.5);
-        doc.setTextColor(30, 25, 20);
+        doc.setFontSize(8.2);
+        doc.setTextColor(txtR, txtG, txtB);
         const splitMealName = doc.splitTextToSize(slot.mealName, colWidth - 6);
         doc.text(splitMealName, x + 3, slotY);
-        slotY += splitMealName.length * 3.8;
+        slotY += splitMealName.length * 3.6;
 
-        // Macro summary if space permits
-        if (slot.calories) {
+        // Macro summary if enabled
+        if (showNutrition && slot.calories) {
           doc.setFont('helvetica', 'normal');
-          doc.setFontSize(7);
-          doc.setTextColor(110, 105, 100);
+          doc.setFontSize(6.8);
+          doc.setTextColor(secTxtR, secTxtG, secTxtB);
           const macroText = `${slot.calories} kcal | ${slot.protein || 0}g P`;
           doc.text(macroText, x + 3, slotY);
-          slotY += 4;
+          slotY += 3.8;
         }
       }
-      slotY += 3;
+      slotY += 2.8;
     }
   }
 
   // Footer / Grocery summary if space permits
   if (groceries.length > 0 && numRows === 1) {
     const groceryY = startY + cardHeight + 8;
-    doc.setFillColor(255, 255, 255);
-    doc.setDrawColor(225, 220, 212);
+    doc.setFillColor(cardR, cardG, cardB);
+    doc.setDrawColor(bordR, bordG, bordB);
     doc.roundedRect(margin, groceryY, availableWidth, 38, 2, 2, 'FD');
 
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(9);
-    doc.setTextColor(45, 42, 38);
+    doc.setTextColor(txtR, txtG, txtB);
     doc.text('Key Grocery Items', margin + 5, groceryY + 6);
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7.5);
-    doc.setTextColor(70, 65, 60);
+    doc.setTextColor(secTxtR, secTxtG, secTxtB);
 
     const sampleGroceries = groceries.slice(0, 18);
     const groceryColWidth = availableWidth / 3;

@@ -1,5 +1,6 @@
 import type {
   HouseholdSettings,
+  AppTheme,
   Meal,
   Recipe,
   MealCategory,
@@ -91,6 +92,7 @@ class AppState {
       this.acceptedPlans = await getAllAcceptedPlans();
       this.mealHistoryMap = await getMealHistoryMap();
 
+      this.applyTheme(this.settings.theme || 'warm-terracotta');
       this.initializeUnpopulatedGrid();
     } catch (err) {
       console.error('Failed to initialize app state:', err);
@@ -290,7 +292,26 @@ class AppState {
     this.planConstraints = this.planConstraints.filter(c => c.id !== id);
   }
 
+  applyTheme(theme: AppTheme) {
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+  }
+
+  async updateTheme(theme: AppTheme) {
+    this.applyTheme(theme);
+    await this.updateSettingsData({ theme });
+  }
+
+  async toggleNutrition() {
+    const nextVal = this.settings.showNutritionInfo === false;
+    await this.updateSettingsData({ showNutritionInfo: nextVal });
+  }
+
   async updateSettingsData(partial: Partial<HouseholdSettings>) {
+    if (partial.theme) {
+      this.applyTheme(partial.theme);
+    }
     const updated = await updateSettings(partial);
     this.settings = updated;
     this.showToast('Settings saved.', 'success');

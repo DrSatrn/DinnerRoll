@@ -43,6 +43,8 @@ export interface Recipe {
   ingredients: Ingredient[];
 }
 
+export type AppTheme = 'warm-terracotta' | 'nordic-slate' | 'midnight-diner' | 'olive-grove';
+
 export interface HouseholdSettings {
   timezone: string;
   defaultPlanDurationDays: number;
@@ -54,6 +56,10 @@ export interface HouseholdSettings {
   maxFullPlanRerolls: number;
   maxIndividualSlotRerolls: number;
   reducedMotion: boolean;
+  showNutritionInfo?: boolean;
+  theme?: AppTheme;
+  remindersListName?: string;
+  shortcutName?: string;
 }
 
 export interface ScheduledSlot {

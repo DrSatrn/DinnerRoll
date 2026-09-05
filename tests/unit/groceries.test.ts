@@ -125,13 +125,15 @@ describe('Grocery Generation & Aggregation', () => {
       { name: 'Apples', quantity: 6, unit: 'item', category: 'Produce', sourceMeals: ['Fruit Bowl'] }
     ];
 
-    const payload = createShortcutPayload(items);
+    const payload = createShortcutPayload(items, 'Family Shopping');
     expect(payload.source).toBe('DinnerRoll');
-    expect(payload.version).toBe('1.0');
-    expect(payload.items[0].name).toBe('Apples');
-    expect(payload.items[0].display).toBe('6 item Apples');
+    expect(payload.version).toBe('2.0');
+    expect(payload.listName).toBe('Family Shopping');
+    expect(payload.items[0]).toBe('6 item Apples');
+    expect(payload.detailedItems[0].name).toBe('Apples');
+    expect(payload.plainText).toBe('6 item Apples');
 
-    const url = buildShortcutUrl(items, 'DinnerRoll Groceries');
+    const url = buildShortcutUrl(items, 'DinnerRoll Groceries', 'Family Shopping');
     expect(url.startsWith('shortcuts://run-shortcut?name=DinnerRoll%20Groceries')).toBe(true);
     expect(url).toContain('text=');
   });

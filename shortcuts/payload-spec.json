@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "DinnerRollShortcutPayload",
   "type": "object",
-  "required": ["source", "version", "timestamp", "items"],
+  "required": ["source", "version", "timestamp", "items", "plainText"],
   "properties": {
     "source": {
       "type": "string",
@@ -10,13 +10,22 @@
     },
     "version": {
       "type": "string",
-      "enum": ["1.0"]
+      "enum": ["2.0"]
     },
     "timestamp": {
       "type": "string",
       "format": "date-time"
     },
+    "listName": {
+      "type": "string"
+    },
     "items": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "detailedItems": {
       "type": "array",
       "items": {
         "type": "object",
@@ -29,36 +38,23 @@
           "section": { "type": "string" }
         }
       }
+    },
+    "plainText": {
+      "type": "string"
     }
   },
   "examples": [
     {
       "source": "DinnerRoll",
-      "version": "1.0",
+      "version": "2.0",
       "timestamp": "2026-09-05T10:00:00.000Z",
+      "listName": "Family Shopping",
       "items": [
-        {
-          "name": "Chicken Breast",
-          "quantity": 800,
-          "unit": "g",
-          "display": "800 g Chicken Breast",
-          "section": "Meat"
-        },
-        {
-          "name": "Lemon",
-          "quantity": 2,
-          "unit": "item",
-          "display": "2 item Lemon",
-          "section": "Produce"
-        },
-        {
-          "name": "Olive Oil",
-          "quantity": 30,
-          "unit": "ml",
-          "display": "30 ml Olive Oil",
-          "section": "Pantry"
-        }
-      ]
+        "800 g Chicken Breast",
+        "2 item Lemon",
+        "30 ml Olive Oil"
+      ],
+      "plainText": "800 g Chicken Breast\n2 item Lemon\n30 ml Olive Oil"
     }
   ]
 }

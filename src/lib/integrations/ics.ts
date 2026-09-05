@@ -123,3 +123,7 @@ export function downloadICSFile(slots: ScheduledSlot[], filename = 'dinnerroll-p
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 }
+
+export const generateICS = generateICSForSlots;
+export const downloadICS = downloadICSFile;
+
