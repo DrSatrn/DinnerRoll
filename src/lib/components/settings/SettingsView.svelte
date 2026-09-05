@@ -12,7 +12,8 @@
     IconBreakfast,
     IconLunch,
     IconDinner,
-    IconCheck
+    IconCheck,
+    IconRoll
   } from '../../icons';
 
   let fileInput = $state<HTMLInputElement>();
@@ -441,12 +442,13 @@
           style="display: none;"
         />
 
-        <button type="button" class="btn btn-ghost" onclick={() => appState.loadSampleData()}>
-          <span>Reload Sample Household Data (30 meals)</span>
+        <button type="button" class="btn btn-secondary btn-sm" onclick={() => appState.loadSampleData()} title="Reload 30 sample household meals and recipes">
+          <IconRoll size={15} />
+          <span>Reload Sample Data</span>
         </button>
 
-        <button type="button" class="btn btn-ghost danger-btn" onclick={handleResetAll}>
-          <IconTrash size={16} />
+        <button type="button" class="btn btn-ghost btn-sm danger-btn" onclick={handleResetAll}>
+          <IconTrash size={15} />
           <span>Clear All Local Data</span>
         </button>
       </div>
@@ -763,11 +765,16 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 0.75rem;
+    width: 100%;
+  }
+
+  .backup-actions .btn {
+    max-width: 100%;
   }
 
   .danger-btn {
     color: var(--accent-error);
-    margin-top: 0.5rem;
+    margin-top: 0.35rem;
   }
 
   .danger-btn:hover:not(:disabled) {

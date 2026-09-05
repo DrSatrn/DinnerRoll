@@ -64,6 +64,7 @@ class AppState {
   // Roll & Reroll Session Tracking
   hasRolled = $state(false);
   isSpinning = $state(false);
+  spinningSlotId = $state<string | null>(null);
   fullPlanRerollsRemaining = $state(1);
   individualSlotRerollsRemaining = $state(1);
   generationHistory = $state<PlanGenerationSnapshot[]>([]);
@@ -184,11 +185,16 @@ class AppState {
     this.planWarnings = result.warnings;
     this.hasRolled = true;
 
-    // Subtle presentation pause for reel settling animation
+    // Authentic pokies sequential spin duration (approx 1.8s - 2.3s total depending on columns)
+    const effectiveCols = Math.min(this.planDurationDays, 7);
+    const totalDuration = this.settings.reducedMotion
+      ? 0
+      : 1500 + (effectiveCols - 1) * 110 + 150;
+
     if (!this.settings.reducedMotion) {
       setTimeout(() => {
         this.isSpinning = false;
-      }, 550);
+      }, totalDuration);
     } else {
       this.isSpinning = false;
     }
@@ -212,6 +218,8 @@ class AppState {
 
     const slot = this.planSlots.find(s => s.id === slotId);
     if (!slot || slot.isBlocked) return;
+
+    this.spinningSlotId = slotId;
 
     const { slot: updated, warning } = rerollSingleSlot({
       slotToReroll: slot,
@@ -239,6 +247,16 @@ class AppState {
       };
       this.generationHistory = [...this.generationHistory, snapshot];
       this.historyIndex = this.generationHistory.length - 1;
+
+      if (!this.settings.reducedMotion) {
+        setTimeout(() => {
+          if (this.spinningSlotId === slotId) {
+            this.spinningSlotId = null;
+          }
+        }, 1600);
+      } else {
+        this.spinningSlotId = null;
+      }
     }
   }
 
