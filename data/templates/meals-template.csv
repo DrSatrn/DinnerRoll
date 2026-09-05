@@ -1,0 +1,2 @@
+Name,Category,Servings,UseByDays,MealTypes,MinimumRepeatWeeks,CaloriesPerServing,ProteinGramsPerServing,FatGramsPerServing,CarbsGramsPerServing,RecipeId,Enabled,WeightModifier,Id
+"Lemon Herb Roast Chicken","Chicken",4,3,"Dinner",,520,42,22,12,"recipe-lemon-herb-chicken",true,1.0,"meal-chicken-lemon-herb"

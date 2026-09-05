@@ -1,0 +1,31 @@
+Name,Category,Servings,UseByDays,MealTypes,MinimumRepeatWeeks,CaloriesPerServing,ProteinGramsPerServing,FatGramsPerServing,CarbsGramsPerServing,RecipeId,Enabled,WeightModifier,Id
+Lemon Herb Roast Chicken,Chicken,4,3,Dinner,,520,42,22,12,recipe-lemon-herb-chicken,true,,meal-chicken-lemon-herb
+Chicken Tikka Masala,Chicken,4,3,"Lunch,Dinner",,580,38,28,35,recipe-chicken-tikka-masala,true,,meal-chicken-tikka-masala
+Crispy Chicken Schnitzel,Chicken,4,2,"Lunch,Dinner",,620,40,30,45,,true,,meal-chicken-schnitzel
+Chicken and Leek Pie,Chicken,6,3,Dinner,,640,32,36,48,,true,,meal-chicken-leek-pie
+Teriyaki Chicken Bowl,Chicken,4,2,"Lunch,Dinner",,490,36,14,55,recipe-teriyaki-chicken,true,,meal-chicken-teriyaki-bowl
+Greek Lemon Chicken Soup,Chicken,4,3,"Lunch,Dinner",,380,28,12,38,,true,1.2,meal-chicken-greek-soup
+Classic Beef Lasagne,Beef,6,4,"Lunch,Dinner",6,680,36,32,58,recipe-beef-lasagne,true,,meal-beef-lasagne
+Slow Cooker Beef Ragù,Beef,6,4,Dinner,,610,44,24,50,recipe-beef-ragu,true,,meal-beef-slow-ragu
+Grass-fed Beef Burgers,Beef,4,2,"Lunch,Dinner",,650,38,35,42,,true,,meal-beef-burgers
+Stir-Fried Beef and Broccoli,Beef,4,2,Dinner,,460,38,18,28,recipe-beef-broccoli,true,,meal-beef-broccoli-stirfry
+Beef and Vegetable Cottage Pie,Beef,6,3,Dinner,,530,32,22,48,,true,,meal-beef-cottage-pie
+Seared Ribeye with Herb Butter,Beef,2,2,Dinner,8,720,48,54,4,,true,,meal-beef-ribeye-steak
+Crispy Pork Belly with Slaw,Pork,4,3,Dinner,,740,34,62,10,,true,0.8,meal-pork-belly-slaw
+Sweet and Sour Pork,Pork,4,2,"Lunch,Dinner",,550,28,20,62,,true,,meal-pork-sweet-sour
+Pan-Seared Pork Chops with Apples,Pork,4,2,Dinner,,480,38,22,26,recipe-pork-chops,true,,meal-pork-chops-apple
+Pulled Pork Tacos,Pork,6,4,"Lunch,Dinner",,560,36,24,46,recipe-pulled-pork,true,,meal-pork-pulled-tacos
+Pork Dumplings with Ginger Soy,Pork,4,2,"Lunch,Dinner",,460,22,18,52,,true,,meal-pork-dumplings
+Crispy Skin Salmon with Asparagus,Fish,2,2,Dinner,,540,42,34,12,recipe-crispy-salmon,true,,meal-fish-crispy-salmon
+Fish Tacos with Lime Crema,Fish,4,2,"Lunch,Dinner",,420,28,16,42,recipe-fish-tacos,true,,meal-fish-tacos-crema
+Garlic Butter Prawn Linguine,Fish,4,2,Dinner,,510,26,18,60,,true,,meal-fish-prawn-linguine
+Baked Barramundi with Salsa Verde,Fish,4,2,Dinner,,410,36,18,14,,true,,meal-fish-baked-barramundi
+Smoked Salmon and Dill Frittata,Fish,4,3,"Breakfast,Lunch,Dinner",,380,26,24,8,,true,,meal-fish-salmon-frittata
+Creamy Mushroom Risotto,Vegetarian,4,3,Dinner,,490,14,18,68,recipe-mushroom-risotto,true,,meal-veg-mushroom-risotto
+Spinach and Ricotta Cannelloni,Vegetarian,4,3,"Lunch,Dinner",,460,22,20,48,,true,,meal-veg-spinach-cannelloni
+Chickpea and Sweet Potato Curry,Vegetarian,6,4,"Lunch,Dinner",,420,16,12,64,recipe-chickpea-curry,true,,meal-veg-chickpea-curry
+Lentil Shepherd's Pie,Vegetarian,6,4,Dinner,,390,18,10,56,,true,,meal-veg-lentil-pie
+Shakshuka with Warm Sourdough,Vegetarian,4,2,"Breakfast,Lunch,Dinner",,340,16,18,32,recipe-shakshuka,true,,meal-veg-shakshuka
+Fluffy Blueberry Pancakes,Other,4,2,Breakfast,,410,10,12,66,recipe-blueberry-pancakes,true,,meal-other-blueberry-pancakes
+Seasonal Holiday Roast Goose,Other,6,3,Dinner,,780,42,58,16,,false,,meal-other-roast-goose
+Summer Clam Bake,Fish,4,1,Dinner,,450,32,14,38,,false,,meal-fish-clam-bake
